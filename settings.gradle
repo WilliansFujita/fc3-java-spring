@@ -1,0 +1,5 @@
+rootProject.name = 'gc3-admin-do-catalogo'
+include 'domain'
+include 'application'
+include 'infrastructure'
+

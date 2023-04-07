@@ -1,10 +1,13 @@
 package com.fullcycle.admin.catalogo.domain.category;
 
+import com.fullcycle.admin.catalogo.domain.AggregateRoot;
+import com.fullcycle.admin.catalogo.domain.validation.CategoryValidator;
+import com.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
+
 import java.time.Instant;
 import java.util.UUID;
 
-public class Category {
-    private String id;
+public class Category extends AggregateRoot<CategoryID> {
     private String name;
 
     private String description;
@@ -15,31 +18,36 @@ public class Category {
     private Instant deletedAt;
 
     private Category(
-                    final String id,
-                    final String name,
-                    final String description,
-                    final boolean active,
-                    final Instant createdAt,
-                    final Instant updatedAt,
-                    final Instant deletedAt
+                    final CategoryID anID,
+                    final String aName,
+                    final String aDescription,
+                    final boolean isActive,
+                    final Instant aCreationDate,
+                    final Instant aUpdateDate,
+                    final Instant aDeleteDate
         ) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.active = active;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.deletedAt = deletedAt;
+        super(anID);
+        this.name = aName;
+        this.description = aDescription;
+        this.active = isActive;
+        this.createdAt = aCreationDate;
+        this.updatedAt = aUpdateDate;
+        this.deletedAt = aDeleteDate;
     }
 
     public static Category newCategory(final String aName, final String aDiscription, final boolean aActive) {
-        final var id = UUID.randomUUID().toString();
+        final var id = CategoryID.unique();
         final var now = Instant.now();
         return new Category(id,aName,aDiscription,aActive,now,now,null);
     }
 
-    public String getId() {
+    public CategoryID getId() {
         return id;
+    }
+
+    @Override
+    public void validate(ValidationHandler validationHandler) {
+        new CategoryValidator(this,validationHandler).validate();
     }
 
     public String getName() {

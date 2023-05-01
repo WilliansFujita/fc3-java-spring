@@ -1,6 +1,9 @@
 package com.fullcycle.admin.catalogo.domain.category;
 
 import com.fullcycle.admin.catalogo.domain.Identifier;
+import com.fullcycle.admin.catalogo.domain.validation.Error;
+import com.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
+import com.fullcycle.admin.catalogo.domain.validation.Validator;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -42,4 +45,5 @@ public class CategoryID extends Identifier {
     public int hashCode() {
         return Objects.hash(getValue());
     }
+
 }

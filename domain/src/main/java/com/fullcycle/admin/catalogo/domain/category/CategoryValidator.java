@@ -21,12 +21,15 @@ public class CategoryValidator extends Validator {
         if(name == null)
             this.validationHandler().append(new Error("'Name' should not be null"));
 
-        if(name.isBlank())
+        if(name != null && name.isBlank())
             this.validationHandler().append(new Error("'Name' should not be empty"));
 
-        final var length = name.trim().length();
-        if(length < MIN_LENGTH || length > MAX_LENGTH)
-            this.validationHandler().append(new Error("'Name' must be betweeen 3 and 255 characters"));
+        if(name != null){
+            final var length = name.trim().length();
+            if(length < MIN_LENGTH || length > MAX_LENGTH)
+                this.validationHandler().append(new Error("'Name' must be betweeen 3 and 255 characters"));
+        }
+
     }
 }
 

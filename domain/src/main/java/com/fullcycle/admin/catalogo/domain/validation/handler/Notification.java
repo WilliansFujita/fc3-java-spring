@@ -4,6 +4,7 @@ import com.fullcycle.admin.catalogo.domain.exceptions.DomainException;
 import com.fullcycle.admin.catalogo.domain.validation.Error;
 import com.fullcycle.admin.catalogo.domain.validation.ValidationHandler;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,8 +54,19 @@ public class Notification implements ValidationHandler {
     }
 
     @Override
+    public boolean hasError() {
+        return ValidationHandler.super.hasError();
+    }
+
+    @Override
     public List<Error> getErrors() {
         return erros;
     }
+
+    @Override
+    public Error getFirstError() {
+        return ValidationHandler.super.getFirstError();
+    }
+
 
 }

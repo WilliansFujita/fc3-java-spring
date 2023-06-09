@@ -31,7 +31,7 @@ public class CategoryJPAEntity {
     @Column(name="updated_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant updatedAt;
 
-    @Column(name="deleted_at", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name="deleted_at", nullable = true, columnDefinition = "DATETIME(6)")
     private Instant deletedAt;
 
     public CategoryJPAEntity() {
@@ -48,7 +48,7 @@ public class CategoryJPAEntity {
     }
 
     public static CategoryJPAEntity from(Category category){
-        return new CategoryJPAEntity(category.getId().toString(),
+        return new CategoryJPAEntity(category.getId().getValue(),
                 category.getName(),
                 category.getDescription(),
                 category.isActive(),

@@ -24,6 +24,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web'){
         exclude module: 'spring-boot-starter-tomcat'
     }
+    implementation group: 'io.vavr', name: 'vavr', version: '0.10.4'
 
     implementation('org.springframework.boot:spring-boot-starter-undertow')
 

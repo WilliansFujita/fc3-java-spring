@@ -65,6 +65,7 @@ public class CategoryPostgresGateway implements CategoryGateway {
                 aQuery.perpage(),
                 Sort.by(Sort.Direction.fromString(aQuery.direction()),aQuery.sort()));
 
+
         final  var specification = Optional.ofNullable(aQuery.terms())
                 .filter(str -> !str.isBlank())
                 .map(str-> SpecificationUtils

@@ -33,7 +33,7 @@ public class CreateCategoryUseCaseTestIT {
         Assertions.assertNotNull(actualOutPut);
         Assertions.assertNotNull(actualOutPut.id());
 
-        CategoryJPAEntity actualCategory = categoryRepository.findById(actualOutPut.id().getValue()).get();
+        CategoryJPAEntity actualCategory = categoryRepository.findById(actualOutPut.id()).get();
 
         Assertions.assertEquals(expectedName,actualCategory.getName());
         Assertions.assertEquals(expectedDescription,actualCategory.getDescription());
@@ -43,4 +43,6 @@ public class CreateCategoryUseCaseTestIT {
         Assertions.assertNull(actualCategory.getDeletedAt());
 
     }
+
+
 }

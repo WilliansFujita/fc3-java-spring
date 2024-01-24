@@ -64,4 +64,16 @@ public interface CategoryAPI {
     })
     ResponseEntity<?> updateByID(@PathVariable(name = "id", required = true) final String id, @RequestBody @Valid UpdateCategoryAPIInput input);
 
+    @DeleteMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Delete a category by ID")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Category deleted succssfully"),
+            @ApiResponse(responseCode = "404", description = "was not found"),
+            @ApiResponse(responseCode = "500", description = "an internal server error was thrown"),
+    })
+    void deleteByID(@PathVariable(name = "id", required = true) final String id);
 }

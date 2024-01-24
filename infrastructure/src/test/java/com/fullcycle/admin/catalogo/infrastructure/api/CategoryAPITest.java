@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fullcycle.admin.catalogo.ControllerTest;
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryOutput;
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryUseCase;
+import com.fullcycle.admin.catalogo.application.category.delete.DeleteCategoryUseCase;
 import com.fullcycle.admin.catalogo.application.category.retrieve.get.CategoryOutPut;
 import com.fullcycle.admin.catalogo.application.category.retrieve.get.GetCategoryByIdUseCase;
 import com.fullcycle.admin.catalogo.application.category.update.UpdateCategoryOutPut;
@@ -53,6 +54,9 @@ public class CategoryAPITest {
 
     @MockBean
     private UpdateCategoryUseCase updateCategoryUseCase;
+
+    @MockBean
+    private DeleteCategoryUseCase deleteCategoryUseCase;
 
     @Test
     public void givenAValidComand_whenCallsCreateCategory_shouldReturnCategoryId() throws Exception {
@@ -321,4 +325,35 @@ public class CategoryAPITest {
         ));
 
     }
+
+    @Test
+    public void givenAValidID_whenCallDeleteCategory_shouldBeOk() throws Exception {
+
+        //given
+        final String expectedName = "Filme";
+        final var expectedDescription = "A Categoria mais assistida";
+        final var expectedIsActive = true;
+
+        final var aCategory = Category.newCategory(expectedName, expectedDescription, expectedIsActive);
+
+        final var expectedId = aCategory.getId().getValue();
+
+        doNothing()
+                .when(deleteCategoryUseCase)
+                .execute(any());
+
+        //when
+
+        final var request = MockMvcRequestBuilders.delete("/categories/{id}",expectedId)
+                .contentType(MediaType.APPLICATION_JSON_VALUE);
+
+        final var response = this.mvc.perform(request)
+                .andDo(print());
+
+        //then
+        response.andExpect(status().isNoContent());
+
+        verify(deleteCategoryUseCase, times(1)).execute(eq(expectedId));
+    }
+
 }

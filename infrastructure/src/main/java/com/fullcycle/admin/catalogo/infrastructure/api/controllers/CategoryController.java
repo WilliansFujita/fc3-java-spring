@@ -3,10 +3,13 @@ package com.fullcycle.admin.catalogo.infrastructure.api.controllers;
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryCommand;
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryOutput;
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryUseCase;
+import com.fullcycle.admin.catalogo.application.category.retrieve.get.GetCategoryByIdUseCase;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import com.fullcycle.admin.catalogo.infrastructure.api.CategoryAPI;
+import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryAPIOutput;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryAPIInput;
+import com.fullcycle.admin.catalogo.infrastructure.category.presenters.CategoryAPIPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +21,11 @@ public class CategoryController implements CategoryAPI {
 
     private CreateCategoryUseCase createCategoryUseCase;
 
-    public CategoryController(CreateCategoryUseCase createCategoryUseCase) {
+    private GetCategoryByIdUseCase getCategoryByIdUseCase;
+
+    public CategoryController(CreateCategoryUseCase createCategoryUseCase, GetCategoryByIdUseCase getCategoryByIdUseCase) {
         this.createCategoryUseCase = createCategoryUseCase;
+        this.getCategoryByIdUseCase = getCategoryByIdUseCase;
     }
 
     @Override
@@ -45,5 +51,10 @@ public class CategoryController implements CategoryAPI {
     @Override
     public Pagination<?> listCategories(String search, int page, String perPage, String sort, String asc) {
         return null;
+    }
+
+    @Override
+    public CategoryAPIOutput getByID(final String id) {
+        return CategoryAPIPresenter.present(getCategoryByIdUseCase.execute(id));
     }
 }

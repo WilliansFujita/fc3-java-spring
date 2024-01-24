@@ -3,6 +3,7 @@ package com.fullcycle.admin.catalogo.infrastructure.api;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryAPIOutput;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryAPIInput;
+import com.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryAPIInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -50,4 +51,17 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "500", description = "an internal server error was thrown"),
     })
     CategoryAPIOutput getByID(@PathVariable(name = "id", required = true) final String id);
+
+    @PutMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Update a category by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category updated succssfully"),
+            @ApiResponse(responseCode = "404", description = "was not found"),
+            @ApiResponse(responseCode = "500", description = "an internal server error was thrown"),
+    })
+    ResponseEntity<?> updateByID(@PathVariable(name = "id", required = true) final String id, @RequestBody @Valid UpdateCategoryAPIInput input);
+
 }

@@ -7,18 +7,10 @@ import com.fullcycle.admin.catalogo.infrastructure.category.persistence.Category
 import com.fullcycle.admin.catalogo.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
 
 @IntegrationTest
 public class UpdateCategoryUseCaseTestIT {
@@ -55,7 +47,7 @@ public class UpdateCategoryUseCaseTestIT {
         Assertions.assertNotNull(actualOutPut);
         Assertions.assertNotNull(actualOutPut.id());
 
-        CategoryJPAEntity actualCategory = categoryRepository.findById(actualOutPut.id().getValue()).get();
+        CategoryJPAEntity actualCategory = categoryRepository.findById(actualOutPut.id()).get();
 
         Assertions.assertEquals(expectedName,actualCategory.getName());
         Assertions.assertEquals(expectedDescription,actualCategory.getDescription());

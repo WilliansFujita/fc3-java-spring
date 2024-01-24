@@ -4,11 +4,15 @@ import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryCo
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryOutput;
 import com.fullcycle.admin.catalogo.application.category.create.CreateCategoryUseCase;
 import com.fullcycle.admin.catalogo.application.category.retrieve.get.GetCategoryByIdUseCase;
+import com.fullcycle.admin.catalogo.application.category.update.UpdateCategoryCommand;
+import com.fullcycle.admin.catalogo.application.category.update.UpdateCategoryOutPut;
+import com.fullcycle.admin.catalogo.application.category.update.UpdateCategoryUseCase;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import com.fullcycle.admin.catalogo.infrastructure.api.CategoryAPI;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryAPIOutput;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryAPIInput;
+import com.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryAPIInput;
 import com.fullcycle.admin.catalogo.infrastructure.category.presenters.CategoryAPIPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +27,12 @@ public class CategoryController implements CategoryAPI {
 
     private GetCategoryByIdUseCase getCategoryByIdUseCase;
 
-    public CategoryController(CreateCategoryUseCase createCategoryUseCase, GetCategoryByIdUseCase getCategoryByIdUseCase) {
+    private UpdateCategoryUseCase updateCategoryUseCase;
+
+    public CategoryController(CreateCategoryUseCase createCategoryUseCase, GetCategoryByIdUseCase getCategoryByIdUseCase, UpdateCategoryUseCase updateCategoryUseCase) {
         this.createCategoryUseCase = createCategoryUseCase;
         this.getCategoryByIdUseCase = getCategoryByIdUseCase;
+        this.updateCategoryUseCase = updateCategoryUseCase;
     }
 
     @Override
@@ -57,4 +64,28 @@ public class CategoryController implements CategoryAPI {
     public CategoryAPIOutput getByID(final String id) {
         return CategoryAPIPresenter.present(getCategoryByIdUseCase.execute(id));
     }
+
+    @Override
+    public ResponseEntity<?> updateByID(String id, UpdateCategoryAPIInput input) {
+
+        final var aCommand = UpdateCategoryCommand.with(
+                id,
+                input.name(),
+                input.description(),
+                input.active() != null ? input.active() : true
+        );
+
+        final Function<Notification,ResponseEntity<?>> onError = notification ->
+                ResponseEntity.unprocessableEntity().body(notification);
+
+        final Function<UpdateCategoryOutPut, ResponseEntity<?>> onSuccess = output ->
+                ResponseEntity.ok(output);
+
+        return updateCategoryUseCase.execute(aCommand)
+                .fold(onError, onSuccess);
+
+
+    }
+
+
 }

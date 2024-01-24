@@ -4,10 +4,14 @@ import com.fullcycle.admin.catalogo.domain.category.Category;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 
 public record UpdateCategoryOutPut(
-        CategoryID id
+        String id
 ) {
 
     public static UpdateCategoryOutPut from (Category aCategory){
-        return new UpdateCategoryOutPut(aCategory.getId());
+        return new UpdateCategoryOutPut(aCategory.getId().getValue());
+    }
+
+    public static UpdateCategoryOutPut from(final String id) {
+        return new UpdateCategoryOutPut(id);
     }
 }

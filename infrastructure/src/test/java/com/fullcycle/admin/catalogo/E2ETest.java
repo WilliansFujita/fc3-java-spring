@@ -1,9 +1,9 @@
 package com.fullcycle.admin.catalogo;
 
+import com.fullcycle.admin.catalogo.infrastructure.configuration.WebServerConfig;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.ElementType;
@@ -13,13 +13,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@ActiveProfiles("test-integration")
-@DataJpaTest
-@ComponentScan(includeFilters = {
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern = ".[PostgresGateway]")
-})
+@ActiveProfiles("test-e2e")
+@SpringBootTest(classes = WebServerConfig.class)
 @ExtendWith(CleanUpExtension.class)
-public @interface PostgresGatewayTest {
-
-
+@Tag("integrationTest")
+public @interface E2ETest {
 }

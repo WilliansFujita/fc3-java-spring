@@ -1,0 +1,7 @@
+postgres:
+  user: postgres
+  db: admin-catalogo
+  pass: post-dev
+  schema: public
+  url: localhost:${postgres.port}
+  show-sql: true
